@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>CineFund User Portal</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    input, button {
+      margin: 5px;
+      padding: 8px;
+      width: 300px;
+    }
+    .section {
+      margin-bottom: 30px;
+      border-bottom: 1px solid #ccc;
+      padding-bottom: 20px;
+    }
+    h2 {
+      margin-top: 0;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>CineFund User Portal</h1>
+
+  <div class="section">
+    <h2>Register</h2>
+    <input id="regUserId" placeholder="User ID"><br>
+    <input id="regName" placeholder="Name"><br>
+    <input id="regEmail" placeholder="Email"><br>
+    <input id="regPassword" type="password" placeholder="Password"><br>
+    <button onclick="registerUser()">Register</button>
+  </div>
+
+  <div class="section">
+    <h2>Login</h2>
+    <input id="loginUserId" placeholder="User ID"><br>
+    <input id="loginName" placeholder="Name"><br>
+    <input id="loginPassword" type="password" placeholder="Password"><br>
+    <button onclick="loginUser()">Login</button>
+  </div>
+
+  <div class="section">
+    <h2>Get User Details</h2>
+    <input id="getUserId" placeholder="User ID"><br>
+    <input id="authPassword" type="password" placeholder="Password"><br>
+    <button onclick="getUserDetails()">Get Details</button>
+    <pre id="userDetails"></pre>
+  </div>
+
+  <script>
+    const baseUrl = "/cinefund/user/v";
+
+    function registerUser() {
+      const user = {
+        userId: document.getElementById("regUserId").value,
+        name: document.getElementById("regName").value,
+        email: document.getElementById("regEmail").value,
+        password: document.getElementById("regPassword").value,
+        role: "USER"
+      };
+
+      fetch(`${baseUrl}/register`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(user)
+      })
+      .then(res => res.ok ? alert("Registered successfully!") : alert("Registration failed"))
+      .catch(err => console.error(err));
+    }
+
+    function loginUser() {
+      const user = {
+        userId: document.getElementById("loginUserId").value,
+        name: document.getElementById("loginName").value,
+        password: document.getElementById("loginPassword").value
+      };
+
+      fetch(`${baseUrl}/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(user)
+      })
+      .then(res => res.text())
+      .then(msg => alert(msg))
+      .catch(err => console.error(err));
+    }
+
+    function getUserDetails() {
+      const userId = document.getElementById("getUserId").value;
+      const password = document.getElementById("authPassword").value;
+
+      fetch(`${baseUrl}/users/${userId}`, {
+        method: "GET",
+        headers: {
+          "Authorization": "Basic " + btoa(`${userId}:${password}`)
+        }
+      })
+      .then(res => {
+        if (res.status === 401) {
+          alert("Unauthorized");
+          return;
+        }
+        return res.json();
+      })
+      .then(data => {
+        document.getElementById("userDetails").textContent = JSON.stringify(data, null, 2);
+      })
+      .catch(err => console.error(err));
+    }
+  </script>
+
+</body>
+</html>
