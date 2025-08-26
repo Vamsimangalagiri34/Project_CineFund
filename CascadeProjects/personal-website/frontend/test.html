@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>API Connection Test</title>
+</head>
+<body>
+    <h1>API Connection Test</h1>
+    <button id="testBtn">Test API Connection</button>
+    <div id="result"></div>
+
+    <script>
+        document.getElementById('testBtn').addEventListener('click', async () => {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = 'Testing...';
+            
+            try {
+                console.log('Testing connection to API Gateway...');
+                console.log('Current origin:', window.location.origin);
+                
+                const response = await fetch('http://localhost:8090/api/users/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        username: 'testuser',
+                        email: 'test@example.com',
+                        password: 'password123',
+                        firstName: 'Test',
+                        lastName: 'User',
+                        role: 'INVESTOR'
+                    })
+                });
+                
+                console.log('Response status:', response.status);
+                console.log('Response headers:', response.headers);
+                
+                const data = await response.json();
+                console.log('Response data:', data);
+                
+                resultDiv.innerHTML = `<pre>Status: ${response.status}\nData: ${JSON.stringify(data, null, 2)}</pre>`;
+                
+            } catch (error) {
+                console.error('Connection failed:', error);
+                resultDiv.innerHTML = `<pre style="color: red;">Error: ${error.message}\nStack: ${error.stack}</pre>`;
+            }
+        });
+    </script>
+</body>
+</html>

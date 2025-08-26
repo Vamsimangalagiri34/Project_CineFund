@@ -1,0 +1,12 @@
+com\cinefund\fundingservice\repository\TransactionRepository.class
+com\cinefund\fundingservice\entity\Investment.class
+com\cinefund\fundingservice\dto\InvestmentResponseDto.class
+com\cinefund\fundingservice\entity\Transaction.class
+com\cinefund\fundingservice\entity\Transaction$TransactionType.class
+com\cinefund\fundingservice\entity\Transaction$TransactionStatus.class
+com\cinefund\fundingservice\repository\InvestmentRepository.class
+com\cinefund\fundingservice\service\FundingService.class
+com\cinefund\fundingservice\dto\InvestmentDto.class
+com\cinefund\fundingservice\entity\Investment$InvestmentStatus.class
+com\cinefund\fundingservice\FundingServiceApplication.class
+com\cinefund\fundingservice\controller\FundingController.class
